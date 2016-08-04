@@ -16,6 +16,8 @@ func main() {
   }))
 
   beego.SetStaticPath("/", "static")
+  beego.SetStaticPath("/index_files", "static/index_files")
+  beego.SetStaticPath("/intl", "static/intl")
 
 	beego.Run()
 }
