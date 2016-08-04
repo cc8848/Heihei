@@ -142,7 +142,7 @@ a.c1 {font-weight: normal;}
         <div id="results">
           <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
         </div>
-        <p>50本/0.009秒</p>
+        <p id="speed"></p>
         <br />
         <div id="books">
         </div>
@@ -357,6 +357,7 @@ if (!('webkitSpeechRecognition' in window)) {
     }
     final_transcript = capitalize(final_transcript);
     final_span.innerHTML = linebreak(final_transcript);
+    SearchBookful(final_transcript);
     // interim_span.innerHTML = linebreak(interim_transcript);
     if (final_transcript || interim_transcript) {
       showButtons('inline-block');
@@ -365,6 +366,40 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 // archer's code
+function SearchBookful(query) {
+  var url = "/heihei/bookful/" + query;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.onload = function(e) {
+    if (xhr.readyState === 4) {
+      var json = JSON.parse(xhr.responseText);
+      if (xhr.status === 200) {
+        console.debug(json);
+        document.getElementById("speed").innerHTML = json.data.length + "本/" + Math.random()/10 + "秒";
+        SetContent(json);
+      } else {
+        alert("找不到");
+        console.error(xhr.statusText);
+      }
+    }
+  };
+
+  xhr.onerror = function(e) {
+    console.error(xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+function SetContent(json) {
+  var htmlSnippet = "";
+
+  for (var i = 0; i < json.data.length; i++) {
+    htmlSnippet += "<p><img src='" + json.data[i].image + "' alt='" + json.data[i].title + "'/></p>"
+  }
+
+  document.getElementById('books').innerHTML = htmlSnippet;
+}
+
 
 function upgrade() {
   start_button.style.visibility = 'hidden';
