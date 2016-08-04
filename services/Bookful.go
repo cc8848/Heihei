@@ -9,7 +9,7 @@ import (
   "errors"
 )
 
-var WukongBookDetailCollection = beego.AppConfig.String("BookDetailCollection")
+var BookfulCollection = beego.AppConfig.String("BookfulCollection")
 
 var (
 	// searcher是线程安全的
@@ -32,8 +32,8 @@ func Indexer() (err error, rtv int64) {
     return
   }
 
-  var Book models.BookDetail
-  Iterator := Session.DB(DB).C(WukongBookDetailCollection).Find(nil).Iter()
+  var Book models.Bookful
+  Iterator := Session.DB(DB).C(BookfulCollection).Find(nil).Iter()
   for Iterator.Next(&Book) {
     beego.Info(Book.WukongDocId)
     searcher.IndexDocument(Book.WukongDocId, types.DocumentIndexData{Content: Book.Title}, false)
@@ -45,7 +45,7 @@ func Indexer() (err error, rtv int64) {
   return
 }
 
-func Searcher(query string) (err error, rtv models.BookDetail) {
+func Searcher(query string) (err error, rtv models.Bookful) {
   if CheckAndReconnect() != nil {
     return
   }
@@ -58,7 +58,7 @@ func Searcher(query string) (err error, rtv models.BookDetail) {
   }
   var WukongDocId = SearchRes[0].DocId
   var criteria = bson.M{"wukongdocid": WukongDocId, "clc_sort_num": bson.M{"$ne": ""}}
-  err = Session.DB(DB).C(BookDetailCollection).Find(criteria).One(&rtv)
+  err = Session.DB(DB).C(BookfulCollection).Find(criteria).One(&rtv)
   if err != nil {
     beego.Info(err)
     err = errors.New("Server Internal Error")
