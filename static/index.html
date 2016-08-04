@@ -394,7 +394,7 @@ function SetContent(json) {
   var htmlSnippet = "";
 
   for (var i = 0; i < json.data.length; i++) {
-    htmlSnippet += "<p><img src='" + json.data[i].image + "' alt='" + json.data[i].title + "'/></p>"
+    htmlSnippet += "<p><img width='180px' height='260px' src='" + json.data[i].image + "' alt='" + json.data[i].title + "'/></p>"
   }
 
   document.getElementById('books').innerHTML = htmlSnippet;
