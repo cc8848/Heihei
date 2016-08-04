@@ -59,8 +59,10 @@ func (this *BookfulController) SearchBookful() {
     this.Ctx.ResponseWriter.WriteHeader(500)
   } else {
     rt.Msg = "^_^"
-    rt.Data = make([]models.Recs, 1)
-    rt.Data[0] = rtv
+    rt.Data = make([]models.Recs, len(rtv))
+    for ix, value := range rtv {
+      rt.Data[ix] = value
+    }
   }
 
   this.Data["json"] = &rt

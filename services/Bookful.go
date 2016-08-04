@@ -68,13 +68,13 @@ func Searcher(query string) (err error, rtv models.Bookful) {
   return
 }
 
-func SearchBookful(query string) (err error, rtv models.Bookful) {
+func SearchBookful(query string) (err error, rtv []models.Bookful) {
   if CheckAndReconnect() != nil {
     return
   }
 
   var criteria = bson.M{"title": query}
-  err = Session.DB(DB).C(BookfulCollection).Find(criteria).One(&rtv)
+  err = Session.DB(DB).C(BookfulCollection).Find(criteria).All(&rtv)
   if err != nil {
     criteria = bson.M{"title": bson.M{"$regex": bson.RegEx{".*" + query + "*.", ""}}}
     err = Session.DB(DB).C(BookfulCollection).Find(criteria).One(&rtv)
