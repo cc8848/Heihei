@@ -67,3 +67,23 @@ func Searcher(query string) (err error, rtv models.Bookful) {
 
   return
 }
+
+func SearchBookful(query string) (err error, rtv models.Bookful) {
+  if CheckAndReconnect() != nil {
+    return
+  }
+
+  var criteria = bson.M{"title": query}
+  err = Session.DB(DB).C(BookfulCollection).Find(criteria).One(&rtv)
+  if err != nil {
+    criteria = bson.M{"title": bson.M{"$regex": bson.RegEx{".*" + query + "*.", ""}}}
+    err = Session.DB(DB).C(BookfulCollection).Find(criteria).One(&rtv)
+    if err != nil {
+      beego.Info(err)
+      err = errors.New("Server Internal Error")
+      return
+    }
+  }
+
+  return
+}

@@ -47,3 +47,22 @@ func (this *BookfulController) Searcher() {
   this.Data["json"] = &rt
   this.ServeJSON()
 }
+
+func (this *BookfulController) SearchBookful() {
+  var rt models.Result
+  var query = this.GetString(":query")
+
+  err, rtv := services.SearchBookful(query)
+  if err != nil {
+    rt.Msg = "o_o"
+    beego.Info(err)
+    this.Ctx.ResponseWriter.WriteHeader(500)
+  } else {
+    rt.Msg = "^_^"
+    rt.Data = make([]models.Recs, 1)
+    rt.Data[0] = rtv
+  }
+
+  this.Data["json"] = &rt
+  this.ServeJSON()
+}

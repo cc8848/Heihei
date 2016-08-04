@@ -6,6 +6,7 @@ import (
 )
 
 func init() {
-	beego.Router("/goat/indexer", &controllers.BookfulController{}, "get:Indexer")
-	beego.Router("/goat/searcher/:query", &controllers.BookfulController{}, "get:Searcher")
+	beego.Router("/heihei/indexer", &controllers.BookfulController{}, "get:Indexer")
+	beego.Router("/heihei/searcher/:query", &controllers.BookfulController{}, "get:Searcher")
+  beego.Router("/heihei/bookful/:query", &controllers.BookfulController{}, "get:SearchBookful")
 }
