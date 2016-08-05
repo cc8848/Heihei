@@ -367,6 +367,11 @@ if (!('webkitSpeechRecognition' in window)) {
 
 // archer's code
 function SearchBookful(query) {
+  // if query is empty, do nothing
+  if (!query) {
+    return
+  }
+
   var url = "/heihei/bookful/" + query;
   var xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
@@ -394,7 +399,7 @@ function SetContent(json) {
   var htmlSnippet = "";
 
   for (var i = 0; i < json.data.length; i++) {
-    htmlSnippet += "<p><img width='180px' height='260px' src='" + json.data[i].image + "' alt='" + json.data[i].title + "'/></p>"
+    htmlSnippet += "<p><img width='80px' height='120px' src='" + json.data[i].image + "' alt='" + json.data[i].title + "'/></p>"
   }
 
   document.getElementById('books').innerHTML = htmlSnippet;

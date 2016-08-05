@@ -21,4 +21,4 @@ WukongDocId = int(0)
 for book in books:
     print book['_id'], WukongDocId
     WukongDocId = WukongDocId + 1
-    dc.update_one({'_id': book['_id']}, {'$set': {'wukongdocid': WukongDocId}})
+    bc.update_one({'_id': book['_id']}, {'$set': {'wukongdocid': WukongDocId}})
